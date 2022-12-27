@@ -5,13 +5,14 @@ const express = require('express');
 
 const app = express();
 
-// 路由設定,routes(node都必須先setting路由)
-app.get('/',(req,res)=>{
-    res.send(`<h1>hello</h1>`);
-});
-// 所有路由設定都要放在這邊之後
-// use = 接受所有http的方法( post or get ...)
+app.set('view engine','ejs');
 
+// setting ejs 第一個參數不需要副檔名
+app.get('/',(req,res)=>{
+    res.render('main',{name:'yun'});
+});
+
+// setting public 
 app.use(express.static('public'));
 
 app.use((req,res)=>{
