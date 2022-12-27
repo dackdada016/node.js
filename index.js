@@ -10,10 +10,13 @@ app.get('/',(req,res)=>{
     res.send(`<h1>hello</h1>`);
 });
 // 所有路由設定都要放在這邊之後
-// use = 接受所有http的方法
+// use = 接受所有http的方法( post or get ...)
+
+app.use(express.static('public'));
+
 app.use((req,res)=>{
-    res.type('text/plain');
-    res.status(404).send(`找不到你的頁面`);
+    res.type('text/html');
+    res.status(404).send(`<h1>找不到你的頁面</h1>`);
 });
 
 
