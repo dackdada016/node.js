@@ -12,6 +12,11 @@ app.get('/',(req,res)=>{
     res.render('main',{name:'yun'});
 });
 
+app.get("/json-sales",(req,res)=>{
+    const data = require(__dirname + '/data/sales.json')
+    res.json(data);
+
+});
 // setting public 
 app.use(express.static('public'));
 
