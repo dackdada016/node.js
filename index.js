@@ -1,7 +1,7 @@
 // 載入env setting
 require('dotenv').config();
 const multer = require('multer');
-const upload = multer({ dest:'upload_tamp/' });
+const upload = require('./modules/upload-img');
 
 // const { json, request } = require('express');
 const express = require('express');
@@ -105,10 +105,14 @@ app.get("/json-sales2", (req, res) => {
     res.render("json-sales", { data, handleObj });
   });
 
-app.post("/try-upload", upload.single('avatar'),(req,res) => {
-    res.json(req.file);
+// 上傳單張圖片
+  app.post("/try-upload", upload.single('avatar'), (req, res) => {
+    res.json(req.file)
+  });
+// 上傳多張圖片
+app.post("/try-uploads", upload.array('photos'), (req, res) => {
+    res.json(req.files)
 });
-
 // setting public 
 app.use(express.static('public'));
 
