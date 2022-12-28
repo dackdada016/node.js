@@ -8,11 +8,13 @@ const app = express();
 
 app.set('view engine','ejs');
 
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
+
 // setting ejs 第一個參數不需要副檔名
 app.get('/',(req,res)=>{
     res.render('main',{name:'yun'});
 });
-
 
 app.get("/json-sales",(req,res)=>{
     const data = require(__dirname + '/data/sales.json')
@@ -29,9 +31,7 @@ app.get("/try-qs",(req,res)=>{
     res.json(req.query);
 });
 
-const urlencodedParser = express.urlencoded({extended:false});
-const jsonParser = express.json();
-app.post(["/try-post","/try-post2"],[urlencodedParser, jsonParser],(req,res) => {
+app.post(["/try-post","/try-post2"],(req,res) => {
     res.json(req.body);
 });
 
