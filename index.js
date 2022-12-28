@@ -129,7 +129,7 @@ app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
     let u =req.url.slice(3);
     // 排除query string的參數字元
     u = u.split('?')[0];
-    // 排除user輸入的'-' 用空字串重新串接
+    // 排除user輸入在網址列的'-' 用空字串重新串接
     u = u.split('-').join('');
     res.send({u})
 });
