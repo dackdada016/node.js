@@ -113,6 +113,13 @@ app.get("/json-sales2", (req, res) => {
 app.post("/try-uploads", upload.array('photos'), (req, res) => {
     res.json(req.files)
 });
+
+
+app.get("/my-params1/:action?/:id?", (req, res) => {
+    res.json(req.params)
+});
+
+
 // setting public 
 app.use(express.static('public'));
 
