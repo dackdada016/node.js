@@ -35,6 +35,13 @@ app.post(["/try-post","/try-post2"],(req,res) => {
     res.json(req.body);
 });
 
+app.get("/try-post-form",(req,res) => {
+    res.render('try-post-form');
+});
+app.post("/try-post-form",(req,res) => {
+    res.render('try-post-form',req.body);
+});
+
 
 app.get("/json-sales2", (req, res) => {
     const data = require(__dirname + "/data/sales.json");
