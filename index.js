@@ -114,8 +114,14 @@ app.post("/try-uploads", upload.array('photos'), (req, res) => {
     res.json(req.files)
 });
 
-
+// 較寬鬆的路由設定
 app.get("/my-params1/:action?/:id?", (req, res) => {
+    res.json(req.params)
+});
+
+// 無法拜訪到abc的路由，上方寬鬆的路由設定會先被使用
+// !!越寬鬆的路由設定放在越後面
+app.get("/my-params1/abc", (req, res) => {
     res.json(req.params)
 });
 

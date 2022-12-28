@@ -15,16 +15,16 @@ ex res.json()
 前端傳入的資料
 
 // 取得 query string parameters
-req.qurey()
+req.qurey
+
+// 網址列上的參數(可以藉此抓到db資料)
+req.params -> SEO 效果較qurey好
 
 // 取得表單資料
-req.body()
+req.body
 
 //上傳單一檔案
 req.file
 
 //上傳多個檔案
 req.files
-
-// 網址列上的參數(可以藉此抓到db資料)
-req.params
