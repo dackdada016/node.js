@@ -19,3 +19,7 @@ req.qurey()
 
 // 取得表單資料
 req.body()
+//上傳單一檔案
+req.file
+//上傳多個檔案
+req.files
