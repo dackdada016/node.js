@@ -121,10 +121,18 @@ app.get("/my-params1/:action?/:id?", (req, res) => {
 
 // 無法拜訪到abc的路由，上方寬鬆的路由設定會先被使用
 // !!越寬鬆的路由設定放在越後面
-app.get("/my-params1/abc", (req, res) => {
-    res.json(req.params)
-});
+// app.get("/my-params1/abc", (req, res) => {
+//     res.json(req.params)
+// });
 
+app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
+    let u =req.url.slice(3);
+    // 排除query string的參數字元
+    u = u.split('?')[0];
+    // 排除user輸入的'-' 用空字串重新串接
+    u = u.split('-').join('');
+    res.send({u})
+});
 
 // setting public 
 app.use(express.static('public'));
