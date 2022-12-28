@@ -12,11 +12,23 @@ app.get('/',(req,res)=>{
     res.render('main',{name:'yun'});
 });
 
+
 app.get("/json-sales",(req,res)=>{
     const data = require(__dirname + '/data/sales.json')
-    res.json(data);
+    
+    // 取得已經是原生類型
+    // console.log(data);
+    // res.json(data);
+    res.render('json-sales',{data});
 
 });
+
+qureyString的方法
+app.get("/try-qs",(req,res)=>{
+    res.json(req.query);
+});
+
+
 // setting public 
 app.use(express.static('public'));
 
