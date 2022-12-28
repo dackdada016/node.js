@@ -9,10 +9,13 @@ res.end()
 res.send()
 res.render()
 res.json()
-output選擇其中一種方法即可，避免送出錯誤檔頭
+// output選擇其中一種方法即可，避免送出錯誤檔頭
 ex res.json()
 
 前端傳入的資料
 
-取得qurey string
-req.qurey() 
+// 取得 query string parameters
+req.qurey()
+
+// 取得表單資料
+req.body()
