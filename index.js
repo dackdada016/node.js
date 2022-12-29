@@ -2,7 +2,7 @@
 require('dotenv').config();
 const multer = require('multer');
 const upload = require('./modules/upload-img');
-
+const session = require('express-session')
 // const { json, request } = require('express');
 const express = require('express');
 
@@ -10,10 +10,25 @@ const app = express();
 
 app.set('view engine','ejs');
 
-app.use(express.urlencoded({extended:false}));
+app.use(session({
+  // session 還沒初始化的時候要不要做儲存;
+  saveUninitialized:false,
+  // 沒有變更內容是否回存;
+  resave:false,
+
+  secret:'asdfgh123qwe456',
+
+  cookie:{
+    maxAge:1200_000
+  }
+
+}));
+app.use(express.urlencoded({ extended : false }));
 app.use(express.json());
 
-app.use((req,res,nex)=>{
+
+// 自訂middleware
+app.use((req,res,next)=>{
   res.locals.title = '首頁'
   next();
 });
@@ -146,7 +161,18 @@ app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 // app.use(require('./routes/admin2'));
 app.use('/admins',require('./routes/admin2'));
 
+app.get('/try-sess',(req,res)=>{
+  req.session.my_var = req.session.my_var || 0 ;
+  req.session.my_var++;
+  res.json({
+    my_var: req.session.my_var,
+    session: req.session
+  });
+});
 
+
+
+// 路由設定放在這行之前
 // setting public 
 app.use(express.static('public'));
 

@@ -32,6 +32,8 @@ req.file
 //上傳多個檔案
 req.files
 
+//使用express-session 時
+req.session
 ---------------
 
 RESTful API 簡略規則:
