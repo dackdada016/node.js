@@ -135,7 +135,8 @@ app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 });
 
 
-app.use(require('./routes/admin2'));
+// app.use(require('./routes/admin2'));
+app.use('/admins',require('./routes/admin2'));
 
 
 // setting public 
