@@ -9,6 +9,7 @@ const upload = require("./modules/upload-img");
 const session = require("express-session");
 const moment = require("moment-timezone");
 const db =  require("./modules/connect-mysql");
+
 // const { json, request } = require('express');
 const express = require("express");
 
@@ -166,7 +167,7 @@ app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 
 // app.use(require('./routes/admin2'));
 app.use('/admins',require('./routes/admin2'));
-
+app.use("/address-book", require("./routes/address-book"));
 app.get('/try-sess',(req,res)=>{
   req.session.my_var = req.session.my_var || 0 ;
   req.session.my_var++;
@@ -192,6 +193,7 @@ app.get('/try-db',async (req,res) => {
   res.json(rows);
  
 });
+
 
 
 
