@@ -33,6 +33,8 @@
         { sid: "16", name: "椅拉", parent_sid: "2" },
       ];
 
+      const cate1Val = 2;
+      const cate2Val = 16;
 
       // 建立第一層選單 combobox
 
@@ -40,6 +42,14 @@
       console.log(levelOne);
       cate1.innerHTML = 
         levelOne.map((el) => `<option value="${el.sid}">${el.name}</option>`).join('');
+
+      cate1.value = cate1Val; //依據已儲存的資料產生第一層
+      genLevel2();  // 產生第二層
+      cate2.value = cate2Val;
+
+
+
+
 
       // 依據第一層的值去產生第二層
       function genLevel2(){
