@@ -1,11 +1,16 @@
 // 載入env setting
-require('dotenv').config();
-const multer = require('multer');
-const upload = require('./modules/upload-img');
-const session = require('express-session')
-const moment = require('moment-timezone')
+if (process.argv[2] === "production") {
+  require("dotenv").config({ path: __dirname + "/production.env" });
+} else {
+  require("dotenv").config({ path: __dirname + "/dev.env" });
+}
+const multer = require("multer");
+const upload = require("./modules/upload-img");
+const session = require("express-session");
+const moment = require("moment-timezone");
+const db =  require("./modules/connect-mysql");
 // const { json, request } = require('express');
-const express = require('express');
+const express = require("express");
 
 const app = express();
 
@@ -29,8 +34,8 @@ app.use(express.json());
 
 
 // 自訂middleware
-app.use((req,res,next)=>{
-  res.locals.title = '首頁'
+app.use((req, res, next) => {
+  res.locals.title = process.env.SITE_TITLE || "*** 沒有設定 ***";
   next();
 });
 
@@ -173,11 +178,18 @@ app.get('/try-sess',(req,res)=>{
 app.get('/try-moment',(req,res)=>{
   const d1 = new Date();
   const m1 = moment();
-  const m1a = m1.format('YYYY/MM/DD');
-  const m1b = m1.format('YYYY-MM-DD HH:mm:ss');
-  const m1c = m1.tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
+  const m1a = m1.format("YYYY/MM/DD");
+  const m1b = m1.format("YYYY-MM-DD HH:mm:ss");
+  const m1c = m1.tz("Asia/Tokyo").format("YYYY-MM-DD HH:mm:ss");
 
   res.json({ m1a, m1b, m1c, d1 })
+ 
+});
+
+app.get('/try-db',async (req,res) => {
+  const [rows] = await db.query("SELECT * FROM categories");
+
+  res.json(rows);
  
 });
 
