@@ -10,6 +10,7 @@ res.end()
 res.send()
 res.render()
 res.json()
+
 // output選擇其中一種方法即可，避免送出錯誤檔頭
 ex res.json()
 
