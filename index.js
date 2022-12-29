@@ -13,6 +13,11 @@ app.set('view engine','ejs');
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
+app.use((req,res,nex)=>{
+  res.locals.title = '首頁'
+  next();
+});
+
 // setting ejs 第一個參數不需要副檔名
 app.get('/',(req,res)=>{
     res.render('main',{name:'yun'});
@@ -46,6 +51,9 @@ app.post("/try-post-form",(req,res) => {
 
 
 app.get("/json-sales2", (req, res) => {
+
+    res.locals.title = res.locals.title ? ('測試 - ' +res.locals.title ) : '測試' ;
+
     const data = require(__dirname + "/data/sales.json");
     const { orderby } = req.query;
   
