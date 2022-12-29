@@ -14,6 +14,7 @@ res.json()
 // output選擇其中一種方法即可，避免送出錯誤檔頭
 ex res.json()
 
+res.redirect 頁面轉向
 ---------------
 
 前端傳入的資料
