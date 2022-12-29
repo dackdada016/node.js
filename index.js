@@ -134,6 +134,10 @@ app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
     res.send({u})
 });
 
+
+app.use(require('./routes/admin2'));
+
+
 // setting public 
 app.use(express.static('public'));
 
