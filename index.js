@@ -3,6 +3,7 @@ require('dotenv').config();
 const multer = require('multer');
 const upload = require('./modules/upload-img');
 const session = require('express-session')
+const moment = require('moment-timezone')
 // const { json, request } = require('express');
 const express = require('express');
 
@@ -168,6 +169,16 @@ app.get('/try-sess',(req,res)=>{
     my_var: req.session.my_var,
     session: req.session
   });
+});
+app.get('/try-moment',(req,res)=>{
+  const d1 = new Date();
+  const m1 = moment();
+  const m1a = m1.format('YYYY/MM/DD');
+  const m1b = m1.format('YYYY-MM-DD HH:mm:ss');
+  const m1c = m1.tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
+
+  res.json({ m1a, m1b, m1c, d1 })
+ 
 });
 
 
