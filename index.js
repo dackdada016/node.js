@@ -7,9 +7,12 @@ if (process.argv[2] === "production") {
 const multer = require("multer");
 const upload = require("./modules/upload-img");
 const session = require("express-session");
+const MysqlStroe = require("express-mysql-session")(session); 
 const moment = require("moment-timezone");
 const db = require("./modules/connect-mysql");
 
+// 第一個參數要空物件
+const sessionStroe = new MysqlStroe({}, db)
 const express = require("express");
 
 const app = express();
@@ -23,6 +26,7 @@ app.use(
   session({
     saveUninitialized: false,
     resave: false,
+    store: sessionStroe,
     secret: "ksdjfgdks948564908jdfghkl89",
   })
 );
