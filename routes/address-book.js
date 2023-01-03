@@ -1,15 +1,14 @@
 const express = require("express");
-const { months } = require("moment-timezone");
 const db = require("../modules/connect-mysql");
-
-const upload = require('../modules/upload-img')
+const upload = require("../modules/upload-img");
+const moment = require('moment-timezone');
 
 const router = express.Router();
 
 const getListData = async (req, res) => {
   let page = +req.query.page || 1; // 用戶要看第幾頁
   if (page < 1) {
-    return res.redirect(req.baseUrl+trq.url); // 頁面轉向
+    return res.redirect(req.baseUrl + trq.url); // 頁面轉向
   }
 
   const perPage = 20;
@@ -36,28 +35,65 @@ const getListData = async (req, res) => {
 router.get("/add", async (req, res) => {
   res.render("ab-add");
 });
-router.post("/add", upload.none() , async (req, res) => {
+
+router.post("/add", upload.none(), async (req, res) => {
   const output = {
-    success:false,
-    postData:req.body,
-    code:0,
-    error:{}
+    success: false,
+    postData: req.body, // 除錯用
+    code: 0,
+    errors: {},
+  };
+
+  let { name, email, mobile, birthday, address } = req.body;
+
+  if(!name || name.length<2){
+    output.errors.name = '請輸入正確的姓名';
+    return res.json(output);
   }
 
-  const {name, email, mobile, birthday, address} = req.body;
-  
+
   birthday = moment(birthday);
-  birthday = birthday.isValid() ? birthday.format('YYYY-MM-DD') : null ;
+  birthday = birthday.isValid() ? birthday.format('YYYY-MM-DD') : null;
 
+  // TODO: 資料檢查
 
-  const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?, ?, ?, ?, ?, NOW())";
-  
-  const [result] = await db.query(sql, [name, email, mobile, birthday, address]);
+  const sql =
+    "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?, ?, ?, ?, ?, NOW())";
+
+  const [result] = await db.query(sql, [
+    name,
+    email,
+    mobile,
+    birthday,
+    address,
+  ]);
 
   output.result = result;
-  res.json(req.body);
-  //res.render("ab-list", output);
+  output.success = !! result.affectedRows;
+
+
+  // affectedRows
+  res.json(output);
 });
+
+router.delete("/:sid", async (req, res) => {
+
+  const output = {
+    success:false,
+    errors:''
+  }
+
+  const sid = +req.params.sid || 0 ;
+  if(!sid){
+    output.errors('NO SID')
+    return res.json({output})
+  };
+  const sql = "DELETE FROM `address_book` WHERE sid=?";
+  const [result] = await db.query(sql, [sid]);
+  output.success = !!result.affectedRows;
+  res.json(output);
+});
+
 
 router.get("/", async (req, res) => {
   const output = await getListData(req, res);
@@ -66,10 +102,11 @@ router.get("/", async (req, res) => {
 
 router.get("/api", async (req, res) => {
   const output = await getListData(req, res);
-  for(let item of output.rows){
-    item.birthday = res.locals.toDateString(item.birthday)
+  for (let item of output.rows) {
+    item.birthday2 = res.locals.toDateString(item.birthday);
+    // item.birthday = res.locals.toDateString(item.birthday);
   }
-  // TODO: 用forEach 練習一次
+  // TODO: 用 output.rows.forEach() 再寫一次功能
   res.json(output);
 });
 
