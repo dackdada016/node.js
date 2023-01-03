@@ -36,7 +36,7 @@
                     if(p<1 || p>obj.totalPages) return '';  // 頁碼超出範圍
 
                     return `<li class="page-item ${p===obj.page ? 'active' : ''}">
-                    <a class="page-link" href="#">${p}</a>
+                    <a class="page-link" href="?page=${p}">${p}</a>
                     </li>`;
                 }).join('') }
                 </ul>
@@ -74,7 +74,12 @@
         `};
    
 
-        fetch('/address-book/api?page=11')
+        
+        
+        const usp = new URLSearchParams(location.search);
+        const currentPage = +usp.get('page') || 1 ;
+
+        fetch('/address-book/api?page='+currentPage)
         .then(r=>r.json())
         .then(data=>{
         myData = data;
