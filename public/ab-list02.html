@@ -14,17 +14,8 @@
 
     <div class="container">
         <div class="row">
-            <div class="col">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-        
-                    
-                        <li class="page-item ">
-                        <a class="page-link" href="?page=8">8</a>
-                        </li>
-            
-                    </ul>
-                </nav>
+            <div class="col paginationContainer">
+                
             </div>
         </div>
         <div class="row">
@@ -36,7 +27,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let myData;
+        const renderPagination = (obj)=>{
+            return `
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                ${ Array(11).fill(1).map((v, i)=>{
+                    const p = obj.page-5+i;
+                    if(p<1 || p>obj.totalPages) return '';  // 頁碼超出範圍
 
+                    return `<li class="page-item ${p===obj.page ? 'active' : ''}">
+                    <a class="page-link" href="#">${p}</a>
+                    </li>`;
+                }).join('') }
+                </ul>
+            </nav>
+            `;
+        };
         const renderTable = (ar) => {
 
 
@@ -71,13 +77,17 @@
         
 
 
-        fetch('/address-book/api')
-            .then(r => r.json())
-            .then(data => {
-                myData = data;
-                console.log(data);
-                document.querySelector('.tableContainer').innerHTML = renderTable(data.rows);
-            });
+        fetch('/address-book/api?page=11')
+        .then(r=>r.json())
+        .then(data=>{
+        myData = data;
+        console.log(data);
+
+        document.querySelector('.paginationContainer').innerHTML = renderPagination(data);
+        document.querySelector('.tableContainer').innerHTML = renderTable(data.rows);
+        
+        });
+
 
     </script>
 </body>
