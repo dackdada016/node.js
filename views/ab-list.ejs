@@ -39,7 +39,7 @@
         <tbody>
           <% for(let r of rows){ %>
           <tr>
-            <td><a href=""><i class="fa-solid fa-trash-can"></i></a></td>
+            <td><a href="javascript: deleteitem(<%= r.sid %>)"><i class="fa-solid fa-trash-can"></i></a></td>
             <td><%= r.sid %></td>
             <td><%= r.name %></td>
             <td><%= r.email %></td>
@@ -47,7 +47,7 @@
             <td><%= toDateString(r.birthday) %></td>
             <td><%= r.address %></td>
             <td>
-              <a href="">
+              <a href="<%= baseUrl %>/edit?sid=<%= r.sid %>">
                 <i class="fa-solid fa-pen-to-square"></i>
               </a>
             </td>
@@ -59,4 +59,20 @@
   </div>
 </div>
 <%- include('parts/script') %>
+<script>
+    function deleteitem(sid){
+      if(! confirm(`確定要刪除編號為${sid}的資料嗎?`)){
+        return;
+      }
+      fetch(`<%= baseUrl %>/${sid}`,{
+          method:'DELETE',
+      }).then(r => r.json())
+      .then(data=>{
+        console.log(data);
+        if(data.success){
+          location.reload();
+        }
+      })
+    }  
+</script>
 <%- include('parts/html-foot') %>
