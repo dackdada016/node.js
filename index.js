@@ -19,7 +19,14 @@ const app = express();
 
 app.set("view engine", "ejs");
 
-app.use(require('cors')())
+const corsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    console.log({origin});
+    callback(null, true);
+  },
+};
+app.use(require("cors")(corsOptions));
 
 
 app.use(
