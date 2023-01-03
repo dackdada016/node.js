@@ -1,0 +1,4 @@
+http 協定 protocol, domain, port 
+
+CORS政策
+protocol, domain要相同 以字串判斷

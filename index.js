@@ -16,6 +16,9 @@ const app = express();
 
 app.set("view engine", "ejs");
 
+app.use(require('cors')())
+
+
 app.use(
   session({
     saveUninitialized: false,
