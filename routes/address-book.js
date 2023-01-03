@@ -37,6 +37,9 @@ router.get("/", async (req, res) => {
 
 router.get("/api", async (req, res) => {
   const output = await getListData(req, res);
+  for(let item of output.rows){
+    item.birthday = res.locals.toDateString(item.birthday)
+  }
   res.json(output);
 });
 
