@@ -40,6 +40,7 @@ router.get("/api", async (req, res) => {
   for(let item of output.rows){
     item.birthday = res.locals.toDateString(item.birthday)
   }
+  // TODO: 用forEach 練習一次
   res.json(output);
 });
 
