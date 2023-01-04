@@ -101,7 +101,7 @@
       if(event) event.prevntDefault();
       usp.set('page', 1);
 
-      usp.set('orderby', value);
+      usp.set('orderby', orderbySel.value);
       usp.set('search',searchInput.value);
 
       location.href = '?' + usp.toString();

@@ -22,12 +22,27 @@ const getListData = async (req, res) => {
   let where = 'WHERE 1 ';
 
   let search = req.query.search || '';
+  let orderby = req.query.orderby || '';
+
   if (search){
     // SQL 跳脫單引號，避免SQL injection
     const esc_search = db.escape(`%${search}%`);
 
     console.log({esc_search})
     where += ` AND (\`name\` LIKE ${esc_search} OR \`mobile\` LIKE ${esc_search} OR \`address\` LIKE ${esc_search} ) `;
+  }
+  // 預設值
+  let orderbySQL = ' ORDER BY sid ASC '; // 預設值
+  switch(orderby){
+    case 'sid_desc':
+      orderbySQL = ' ORDER BY sid DESC ';
+      break;
+    case 'birthday_asc':
+      orderbySQL = ' ORDER BY birthday ASC ';
+      break;
+    case 'birthday_desc':
+      orderbySQL = ' ORDER BY birthday DESC ';
+      break;
   }
 
 
@@ -41,8 +56,8 @@ const getListData = async (req, res) => {
     if (page > totalPages) {
       return res.redirect("?page=" + totalPages); // 頁面轉向到最後一頁
     }
-
-    const sql = `SELECT * FROM address_book ${where} ORDER BY sid DESC LIMIT ${
+    
+    const sql = `SELECT * FROM address_book ${where} ${orderbySQL} LIMIT ${
       (page - 1) * perPage
     }, ${perPage}`;
 
