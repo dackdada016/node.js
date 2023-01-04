@@ -58,6 +58,7 @@ app.get("/", (req, res) => {
   res.render("main", { name: "Ester" });
 });
 
+
 app.get("/json-sales", (req, res) => {
   const data = require(__dirname + "/data/sales.json");
 
