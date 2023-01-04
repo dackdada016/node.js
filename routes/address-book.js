@@ -107,7 +107,7 @@ router.get("/edit/:sid", async (req, res) => {
 
 router.put("/edit/:sid", upload.none(), async (req, res) => {
 
-  return res.json(req.body);
+  // return res.json(req.body);
 
   const output = {
     success: false,
@@ -115,6 +115,13 @@ router.put("/edit/:sid", upload.none(), async (req, res) => {
     code: 0,
     errors: {},
   };
+
+
+  const sid = +req.params.sid || 0;
+  if(!sid){
+    output.errors.sid = '沒有資料編號';
+    return res.json(output); //API 不要用轉向
+  }
 
   let { name, email, mobile, birthday, address } = req.body;
 
@@ -130,7 +137,7 @@ router.put("/edit/:sid", upload.none(), async (req, res) => {
   // TODO: 資料檢查
 
   const sql =
-    "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?, ?, ?, ?, ?, NOW())";
+    "UPDATE `address_book` SET `name`=?,`email`=?,`mobile`=?,`birthday`=?,`address`=? WHERE `sid`=?";
 
   const [result] = await db.query(sql, [
     name,
@@ -138,6 +145,7 @@ router.put("/edit/:sid", upload.none(), async (req, res) => {
     mobile,
     birthday,
     address,
+    sid
   ]);
 
   output.result = result;
@@ -145,7 +153,7 @@ router.put("/edit/:sid", upload.none(), async (req, res) => {
 
 
   // affectedRows
-  res.json(output);
+  res.json({result});
 });
 
 
