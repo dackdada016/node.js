@@ -3,17 +3,24 @@
 
 <div class="container">
   <div class="row">
+    <div class="col ">
+    </div>
+  </div>
+  <div class="row">
     <div class="col">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-
+      <nav aria-label="Page navigation example" class="d-flex justify-content-between align-items-center">
+        <ul class="pagination d-flex justify-content-center align-items-center m-2">
           <% for(let i=page-5; i<=page+5; i++) 
           if(i>=1 && i<=totalPages){ %>
           <li class="page-item <%= i==page ? 'active' : '' %>">
             <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-            </li>
+          </li>
           <% } %>
         </ul>
+        <form class="d-flex justify-content-center" role="search">
+            <input class="form-control me-2" type="search" name="search" placeholder="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
       </nav>
     </div>
   </div>

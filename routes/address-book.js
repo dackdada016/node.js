@@ -19,8 +19,20 @@ const getListData = async (req, res) => {
     return res.redirect(req.baseUrl + trq.url); // 頁面轉向
   }
 
+  let where = 'WHERE 1 ';
+
+  let search = req.query.search || '';
+  if (search){
+    // SQL 跳脫單引號，避免SQL injection
+    const esc_search = db.escape(`%${search}%`);
+
+    console.log({esc_search})
+    where += ` AND \`name\` LIKE ${esc_search} `;
+  }
+
+
   const perPage = 20;
-  const t_sql = "SELECT COUNT(1) totalRows FROM address_book";
+  const t_sql = `SELECT COUNT(1) totalRows FROM address_book ${where}`;
   const [[{ totalRows }]] = await db.query(t_sql);
   const totalPages = Math.ceil(totalRows / perPage);
 
@@ -30,7 +42,7 @@ const getListData = async (req, res) => {
       return res.redirect("?page=" + totalPages); // 頁面轉向到最後一頁
     }
 
-    const sql = `SELECT * FROM address_book ORDER BY sid DESC LIMIT ${
+    const sql = `SELECT * FROM address_book ${where} ORDER BY sid DESC LIMIT ${
       (page - 1) * perPage
     }, ${perPage}`;
 
