@@ -234,6 +234,7 @@ app.post("/login", upload.none(), async(req, res)=>{
     if(result){
       output.success = true;
       req.session.user = {
+        // id: row.id,
         email,
         nickname: row.nickname
       };
@@ -248,6 +249,17 @@ app.get("/logout", async(req, res)=>{
   delete req.session.user;
   return res.redirect('/');
 })
+
+// 快速登入
+// app.get("/fake1", async (req, res) => {
+//   req.session.user = {
+//     id: 30,
+//     email: 'shin2@test.com',
+//     nickname: '小強'
+//   };
+//   return res.redirect('/');
+// });
+
 
 app.use("/address-book", require("./routes/address-book"));
 
