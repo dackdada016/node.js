@@ -27,7 +27,7 @@ const getListData = async (req, res) => {
     const esc_search = db.escape(`%${search}%`);
 
     console.log({esc_search})
-    where += ` AND \`name\` LIKE ${esc_search} `;
+    where += ` AND (\`name\` LIKE ${esc_search} OR \`mobile\` LIKE ${esc_search} OR \`address\` LIKE ${esc_search} ) `;
   }
 
 
