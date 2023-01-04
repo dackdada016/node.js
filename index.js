@@ -10,6 +10,7 @@ const session = require("express-session");
 const MysqlStroe = require("express-mysql-session")(session); 
 const moment = require("moment-timezone");
 const db = require("./modules/connect-mysql");
+const bcrypt = require('bcryptjs');
 
 // 第一個參數要空物件
 const sessionStroe = new MysqlStroe({}, db)
@@ -192,6 +193,14 @@ app.get("/try-db", async (req, res) => {
 
   res.json(rows);
 });
+
+app.get("/add-member", async(req, res)=>{
+  const sql = "INSERT INTO `members`(`email`, `password`, `hash`, `nickname`, `create_at`) VALUES (?, ?, '','ESTER',NOW()) ";
+  const password = await bcrypt.hash('12345', 10);
+  
+  const [result] = await db.query(sql, ['dack@test.com',password]);
+  res.json(result);
+})
 
 app.use("/address-book", require("./routes/address-book"));
 
