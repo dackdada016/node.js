@@ -48,6 +48,8 @@ app.use((req, res, next) => {
   // 樣版輔助函式, helper functions
   res.locals.toDateString = d=>moment(d).format('YYYY-MM-DD');
   res.locals.toDatetimeString = d=>moment(d).format('YYYY-MM-DD HH:mm:ss');
+  
+  res.locals.session = req.session;
 
 
 
@@ -199,7 +201,18 @@ app.get("/add-member", async(req, res)=>{
   const password = await bcrypt.hash('12345', 10);
   
   const [result] = await db.query(sql, ['dack@test.com',password]);
-  res.json(result);
+  return res.json({});
+})
+
+app.get("/login", async(req, res)=>{
+  return res.render('login');
+})
+app.post("/login", async(req, res)=>{
+  return res.json({});
+})
+app.get("/logout", async(req, res)=>{
+  delete req.session.user;
+  return res.redirect('/');
 })
 
 app.use("/address-book", require("./routes/address-book"));
