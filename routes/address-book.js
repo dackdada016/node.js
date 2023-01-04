@@ -101,11 +101,14 @@ router.get("/edit/:sid", async (req, res) => {
   }
 
   const row = rows[0];
-  res.json(row);
-  // res.render("ab-edit",{row});
+  // res.json(row);
+  res.render("ab-edit",{...row});
 });
 
 router.put("/edit/:sid", upload.none(), async (req, res) => {
+
+  return res.json(req.body);
+
   const output = {
     success: false,
     postData: req.body, // 除錯用
