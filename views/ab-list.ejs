@@ -9,18 +9,30 @@
   <div class="row">
     <div class="col">
       <nav aria-label="Page navigation example" class="d-flex justify-content-between align-items-center">
-        <ul class="pagination d-flex justify-content-center align-items-center mt-3">
-          <% for(let i=page-5; i<=page+5; i++) 
-          if(i>=1 && i<=totalPages){ %>
-          <li class="page-item <%= i==page ? 'active' : '' %>">
-            <a class="page-link" href="javascript: gotoPage(<%= i %>)"><%= i %></a>
-          </li>
-          <% } %>
-        </ul>
-        <form class="d-flex" role="search">
+        <div class="col">
+          <select class="form-select" id="orderby" onchange="changeParams()">
+            <option value="sid_asc">預設(編號升冪)</option>
+            <option value="sid_desc">編號降冪</option>
+            <option value="birthday_asc">生日升冪</option>
+            <option value="birthday_desc">生日降冪</option>
+          </select>
+        </div>
+        <div class="col ms-1">
+          <form class="d-flex" role="search" onsubmit="changeParams(event)">
             <input class="form-control me-2" type="search" name="search" placeholder="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+        </div>
+        <div class="col">
+          <ul class="pagination d-flex justify-content-center align-items-center mt-3">
+            <% for(let i=page-5; i<=page+5; i++) 
+            if(i>=1 && i<=totalPages){ %>
+            <li class="page-item <%= i==page ? 'active' : '' %>">
+              <a class="page-link" href="javascript: gotoPage(<%= i %>)"><%= i %></a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
       </nav>
     </div>
   </div>
@@ -67,16 +79,34 @@
 </div>
 <%- include('parts/script') %>
 <script>
-  const usp = new URLSearchParams(location.search);
-  const searchInput = document.querySelector('input[name=search]');
-  if(usp.get('search')){
-    // 把搜尋的關鍵字放入搜尋欄位
-    searchInput.value = usp.get('search')
-  }
-  const gotoPage = (page) => {
-    usp.set('page',page)
-    location.href = '?' + usp.toString();
-  }
+    const usp = new URLSearchParams(location.search);
+    const searchInput = document.querySelector('input[name=search]');
+    const orderbySel = document.querySelector('#orderby');
+
+    if(usp.get('search')){
+      // 把搜尋的關鍵字放入搜尋欄位
+      searchInput.value = usp.get('search')
+    }
+    if(usp.get('orderby')){
+      orderbySel.value = usp.get('orderby')
+    }
+    // 跳到第幾頁
+    const gotoPage = (page) => {
+      usp.set('page',page)
+      location.href = '?' + usp.toString();
+    }
+
+    // 設定關鍵字或變更排序
+    const changeParams = (event=null) =>{
+      if(event) event.prevntDefault();
+      usp.set('page', 1);
+
+      usp.set('orderby', value);
+      usp.set('search',searchInput.value);
+
+      location.href = '?' + usp.toString();
+    }
+
     function deleteitem(sid){
       if(! confirm(`確定要刪除編號為${sid}的資料嗎?`)){
         return;
