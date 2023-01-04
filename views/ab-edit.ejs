@@ -68,9 +68,11 @@
 </div>
 <%- include('parts/script') %> 
 <script>
-
   const referer = <%- JSON.stringify(referer) %>;
+
   const locals = <%- JSON.stringify(locals) %>;
+
+
 
   function sendForm(event){
     event.preventDefault();
@@ -101,5 +103,6 @@
 
 
 </script>
+
 
 <%- include('parts/html-foot') %>
