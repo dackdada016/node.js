@@ -48,6 +48,29 @@ router.get('/toggle-like/:pid', async (req, res)=>{
     res.json(output);
   });
   
+  router.get('/likes', async (req, res)=>{
+    const output = {
+      logined: false,
+      error: '',
+      likes: [],
+    };
+
+    if(! req.session.user){
+      return res.json(output);
+    }
+
+    output.logined = true;
+
+    const sql = `SELECT product_id FROM product_likes WHERE member_id=${req.session.user.id} ORDER BY created_at ASC`;
+
+    const [rows] = await db.query(sql);
+    output.likes = rows;
+
+    res.json(output);
+  });
+
+
+
   router.get('/', async (req, res)=>{
     const [rows] = await db.query("SELECT * FROM products");
   
