@@ -68,6 +68,10 @@ const getListData = async (req, res) => {
 };
 
 router.get("/add", async (req, res) => {
+  if(!req.session.user){
+    req.session.lastPage = req.originalUrl;
+    return res.redirect('/login');
+  }
   res.render("ab-add");
 });
 
