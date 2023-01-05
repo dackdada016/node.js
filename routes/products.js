@@ -61,7 +61,10 @@ router.get('/toggle-like/:pid', async (req, res)=>{
 
     output.logined = true;
 
-    const sql = `SELECT product_id FROM product_likes WHERE member_id=${req.session.user.id} ORDER BY created_at ASC`;
+    const sql = `SELECT p.*, pl.product_id FROM product_likes pl
+      JOIN product p
+       ON pl.product_id=p.sid
+      WHERE member_id=${req.session.user.id} ORDER BY created_at ASC`;
 
     const [rows] = await db.query(sql);
     output.likes = rows;
