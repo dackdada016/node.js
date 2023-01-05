@@ -262,6 +262,7 @@ app.get("/logout", async(req, res)=>{
 
 
 app.use("/address-book", require("./routes/address-book"));
+app.use("/products", require("./routes/products"));
 
 app.use(express.static("public"));
 // ***** 所有的路由設定都要放在這行之前 *****
