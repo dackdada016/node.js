@@ -53,7 +53,7 @@
             ${ar.map(({ sid, bookname, author, price, publish_date}) => (`
                 <tr>
                     <td>
-                        <div class="my-like" onclick="toggleLike(event)">
+                        <div class="my-like" data-sid="${sid}"  onclick="toggleLike(event)">
                         <i class="fa-solid fa-heart  text-opacity-75 text-danger"></i>
                         <i class="fa-regular fa-heart "></i>
                   </div>
@@ -86,9 +86,24 @@
         getData(); 
 
         const toggleLike = (event)=>{
-        const t = event.currentTarget;
-        t.classList.toggle('yes');
-      };
+          const t = event.currentTarget;
+          const pid = t.getAttribute('data-sid');
+          console.log({pid});
+
+          fetch(`/products/toggle-like/${pid}`)
+          .then(r => r.json())
+          .then(result => {
+            if(result.success){
+              if(result.action === 'insert'){
+                if(!t.classList.contains('yes')){
+                  t.classList.add('yes');
+                }
+              }else{
+                t.classList.remove('yes')
+              }
+            }
+          })
+        };
 
     </script>
 </body>
