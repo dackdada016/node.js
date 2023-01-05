@@ -92,6 +92,10 @@
       getData(); // 第一次進來呼叫
 
       const toggleLike = (event) => {
+        if(! myLikes.logined ){
+          alert('請先登入')
+          return;
+        }
         const t = event.currentTarget;
 
         const pid = t.getAttribute("data-sid");
